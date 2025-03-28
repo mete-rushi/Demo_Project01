@@ -1,0 +1,9 @@
+{
+	"name": "HrsAdf21",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "7670aa25-9017-4b49-8515-32c34ae1d024",
+		"tenantId": "49d9d1b5-6a93-4f24-98fa-3ffb2527ae27"
+	}
+}
