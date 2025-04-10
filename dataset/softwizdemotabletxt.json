@@ -11,7 +11,7 @@
 			"location": {
 				"type": "AzureBlobFSLocation",
 				"fileName": {
-					"value": "@concat('',pipeline().TriggerTime)",
+					"value": "@concat('NewChange',pipeline().TriggerTime)",
 					"type": "Expression"
 				},
 				"folderPath": "softwizdemotable",
