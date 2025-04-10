@@ -1,0 +1,27 @@
+{
+	"name": "softwizdemotabletxt",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SoftwizdemodestinationLake",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": {
+					"value": "@concat('',pipeline().TriggerTime)",
+					"type": "Expression"
+				},
+				"folderPath": "softwizdemotable",
+				"fileSystem": "data"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
