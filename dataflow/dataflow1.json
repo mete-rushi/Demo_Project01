@@ -1,0 +1,167 @@
+{
+	"name": "dataflow1",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "SCDtype2",
+						"type": "DatasetReference"
+					},
+					"name": "empFile"
+				},
+				{
+					"dataset": {
+						"referenceName": "SCD_AzureSqlTable1",
+						"type": "DatasetReference"
+					},
+					"name": "EmpTable"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "SCD_AzureSqlTable1",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				},
+				{
+					"dataset": {
+						"referenceName": "SCD_AzureSqlTable1",
+						"type": "DatasetReference"
+					},
+					"name": "sink2"
+				}
+			],
+			"transformations": [
+				{
+					"name": "addingisActive"
+				},
+				{
+					"name": "select1"
+				},
+				{
+					"name": "lookup1"
+				},
+				{
+					"name": "filter1"
+				},
+				{
+					"name": "select2"
+				},
+				{
+					"name": "derivedColumn1"
+				},
+				{
+					"name": "alterRow1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          employee_id as integer,",
+				"          first_name as string,",
+				"          last_name as string,",
+				"          department_name as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> empFile",
+				"source(output(",
+				"          SurroKey as integer,",
+				"          employee_id as integer,",
+				"          first_name as string,",
+				"          last_name as string,",
+				"          department_name as string,",
+				"          isActive as integer",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> EmpTable",
+				"empFile derive(isActive = 1) ~> addingisActive",
+				"EmpTable select(mapColumn(",
+				"          {_SQL_SurroKey} = SurroKey,",
+				"          SQL_employee_id = employee_id,",
+				"          SQL_first_name = first_name,",
+				"          SQL_last_name = last_name,",
+				"          SQL_department_name = department_name,",
+				"          SQL_isActive = isActive",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"empFile, select1 lookup(employee_id == SQL_employee_id,",
+				"     multiple: true,",
+				"     broadcast: 'auto')~> lookup1",
+				"lookup1 filter(!isNull(SQL_employee_id)) ~> filter1",
+				"filter1 select(mapColumn(",
+				"          {_SQL_SurroKey},",
+				"          SQL_employee_id,",
+				"          SQL_first_name,",
+				"          SQL_last_name,",
+				"          SQL_department_name,",
+				"          SQL_isActive",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select2",
+				"select2 derive(SQL_isActive = 0) ~> derivedColumn1",
+				"derivedColumn1 alterRow(updateIf(1 == 1)) ~> alterRow1",
+				"addingisActive sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          SurroKey as integer,",
+				"          employee_id as integer,",
+				"          first_name as string,",
+				"          last_name as string,",
+				"          department_name as string,",
+				"          isActive as integer",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     saveOrder: 1,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          employee_id,",
+				"          first_name,",
+				"          last_name,",
+				"          department_name,",
+				"          isActive",
+				"     )) ~> sink1",
+				"alterRow1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          SurroKey as integer,",
+				"          employee_id as integer,",
+				"          first_name as string,",
+				"          last_name as string,",
+				"          department_name as string,",
+				"          isActive as integer",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:true,",
+				"     upsertable:false,",
+				"     keys:['SurroKey'],",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     saveOrder: 2,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          SurroKey = {_SQL_SurroKey},",
+				"          employee_id = SQL_employee_id,",
+				"          first_name = SQL_first_name,",
+				"          last_name = SQL_last_name,",
+				"          department_name = SQL_department_name,",
+				"          isActive = SQL_isActive",
+				"     )) ~> sink2"
+			]
+		}
+	}
+}

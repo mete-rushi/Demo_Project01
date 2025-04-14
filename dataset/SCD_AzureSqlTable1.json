@@ -1,0 +1,44 @@
+{
+	"name": "SCD_AzureSqlTable1",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_SqlDatabase1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "SurroKey",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "employee_id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "first_name",
+				"type": "varchar"
+			},
+			{
+				"name": "last_name",
+				"type": "varchar"
+			},
+			{
+				"name": "department_name",
+				"type": "varchar"
+			},
+			{
+				"name": "isActive",
+				"type": "int",
+				"precision": 10
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "tbl_Emp12"
+		}
+	}
+}
