@@ -144,7 +144,7 @@
 				"          isActive as integer",
 				"     ),",
 				"     deletable:false,",
-				"     insertable:true,",
+				"     insertable:false,",
 				"     updateable:true,",
 				"     upsertable:false,",
 				"     keys:['SurroKey'],",
