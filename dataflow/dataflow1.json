@@ -94,7 +94,7 @@
 				"empFile, select1 lookup(employee_id == SQL_employee_id,",
 				"     multiple: true,",
 				"     broadcast: 'auto')~> lookup1",
-				"lookup1 filter(!isNull(SQL_employee_id)) ~> filter1",
+				"lookup1 filter(!isNull(employee_id)) ~> filter1",
 				"filter1 select(mapColumn(",
 				"          {_SQL_SurroKey},",
 				"          SQL_employee_id,",
