@@ -1,5 +1,5 @@
 {
-	"name": "pipeline2",
+	"name": "Delete_a_File_Before_one_hour",
 	"properties": {
 		"activities": [
 			{
