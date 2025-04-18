@@ -1,0 +1,43 @@
+{
+	"name": "source_data_set",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "source_dataset_linked",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"container": "input"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "user_id",
+				"type": "String"
+			},
+			{
+				"name": "subscription",
+				"type": "String"
+			},
+			{
+				"name": "price",
+				"type": "String"
+			},
+			{
+				"name": "location",
+				"type": "String"
+			},
+			{
+				"name": "pincode",
+				"type": "String"
+			}
+		]
+	}
+}
