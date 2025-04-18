@@ -1,0 +1,33 @@
+{
+	"name": "SCD_Type_2",
+	"properties": {
+		"description": " we have data coming in blob storage container as csv format\nwe are dumping data to blob storage - output container\nwe need to have all the new record inserted into the target file \nwe need to update record if record already present and have updated values\ncreate data pipeline\nschedule it",
+		"activities": [
+			{
+				"name": "Data flow1",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "dataflow2",
+						"type": "DataFlowReference"
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
+			}
+		],
+		"annotations": []
+	}
+}
