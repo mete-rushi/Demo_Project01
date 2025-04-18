@@ -1,0 +1,29 @@
+{
+	"name": "SCD Type 1",
+	"properties": {
+		"description": "we have data coming into blob storage account from external resources\nwe need to copy the data into sql databse\nwe have to check the prevoius data in sql if the data is already present then we need to update that data \nif new data is coming then we need to insert that data",
+		"activities": [
+			{
+				"name": "Data flow1",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
+			}
+		],
+		"annotations": []
+	}
+}
