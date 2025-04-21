@@ -24,6 +24,7 @@
 					],
 					"storeSettings": {
 						"type": "AzureBlobStorageReadSettings",
+						"recursive": true,
 						"enablePartitionDiscovery": false
 					},
 					"formatSettings": {
@@ -65,22 +66,12 @@
 							"typeProperties": {
 								"dataset": {
 									"referenceName": "NEW_DelimitedText3",
-									"type": "DatasetReference",
-									"parameters": {
-										"file_name": {
-											"value": "@item().name",
-											"type": "Expression"
-										}
-									}
+									"type": "DatasetReference"
 								},
 								"fieldList": [
 									"itemName",
 									"lastModified"
 								],
-								"storeSettings": {
-									"type": "AzureBlobStorageReadSettings",
-									"enablePartitionDiscovery": false
-								},
 								"formatSettings": {
 									"type": "DelimitedTextReadSettings"
 								}
@@ -196,13 +187,7 @@
 				"inputs": [
 					{
 						"referenceName": "NEW_DelimitedText3",
-						"type": "DatasetReference",
-						"parameters": {
-							"file_name": {
-								"value": "@variables('latest_file')",
-								"type": "Expression"
-							}
-						}
+						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
