@@ -1,0 +1,97 @@
+{
+	"name": "dataflow3",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DelimitedText7",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "AzureSqlTable2",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				},
+				{
+					"dataset": {
+						"referenceName": "AzureSqlTable4",
+						"type": "DatasetReference"
+					},
+					"name": "sink2"
+				}
+			],
+			"transformations": [
+				{
+					"name": "split1"
+				},
+				{
+					"name": "FileNameColumnForError"
+				},
+				{
+					"name": "FileNameForGoodRows"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          emp_id as string,",
+				"          emp_date as string,",
+				"          emp_location as string,",
+				"          emp_salary as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> source1",
+				"source1 split(isNull(toDate(emp_date,'dd-mmm-yyyy')),",
+				"     disjoint: false) ~> split1@(ErrorRows, GoodRows)",
+				"split1@ErrorRows derive(FileName = 'EmpFile') ~> FileNameColumnForError",
+				"split1@GoodRows derive(FileName = 'EmpFile') ~> FileNameForGoodRows",
+				"FileNameColumnForError sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          emp_id as string,",
+				"          emp_date as string,",
+				"          emp_location as string,",
+				"          emp_salary as decimal(19,4)",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          emp_id,",
+				"          emp_date,",
+				"          emp_location,",
+				"          emp_salary",
+				"     )) ~> sink1",
+				"FileNameForGoodRows sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          emp_id as string,",
+				"          emp_date as string,",
+				"          emp_location as string,",
+				"          emp_salary as decimal(19,4)",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> sink2"
+			]
+		}
+	}
+}

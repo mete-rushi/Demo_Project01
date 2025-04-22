@@ -1,0 +1,35 @@
+{
+	"name": "AzureSqlTable4",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "LS_SqlDatabase1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "emp_id",
+				"type": "nvarchar"
+			},
+			{
+				"name": "emp_date",
+				"type": "nvarchar"
+			},
+			{
+				"name": "emp_location",
+				"type": "nvarchar"
+			},
+			{
+				"name": "emp_salary",
+				"type": "money",
+				"precision": 19,
+				"scale": 4
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "smptable"
+		}
+	}
+}
